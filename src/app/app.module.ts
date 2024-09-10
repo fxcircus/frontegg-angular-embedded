@@ -7,8 +7,7 @@ import { FronteggAppModule, FronteggComponent } from '@frontegg/angular';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ShowAdminPortalComponent } from './show-admin-portal.component';
 import { FormsModule } from '@angular/forms';
-
-
+import { ActivatedRoute, RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [AppComponent, DashboardComponent, ShowAdminPortalComponent],
@@ -17,22 +16,24 @@ import { FormsModule } from '@angular/forms';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    RouterModule,
 
     /** 1. Import Frontegg Module **/
     FronteggAppModule.forRoot(
       {
         contextOptions: {
-          baseUrl: "https://[YOUR-SUB-DOMAIN].frontegg.com",
-          clientId: "[YOUR-CLIENT-ID]", // Replace with Client ID from Frontegg Portal ➜ [ENVIRONMENT] ➜ Env Settings page
-          tenantResolver: () => ({
-            tenant: new URLSearchParams(window.location.search).get("organization"),
-          })
+          baseUrl: "https://app-xxx.frontegg.com", // Replace with Login URL from Frontegg Portal ➜ [ENVIRONMENT] ➜ Env Settings page (remove "/oauth" from the path!)
+          clientId: "clientId", // Replace with Client ID from Frontegg Portal ➜ [ENVIRONMENT] ➜ Env Settings page
+          tenantResolver: () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            return { tenant: urlParams.get('organization') };
+          },
         },
         authOptions: {
-          // disableSilentRefresh: true, // disables token refreshes
-          enableSessionPerTenant: true // enables separate sessions for each new tab
+          enableSessionPerTenant: true, // enables separate sessions for each new tab
+          keepSessionAlive: true // Uncomment this in order to maintain the session alive
         },
-        hostedLoginBox: true,
+        hostedLoginBox: false,
       }
     ),
   ],
@@ -43,8 +44,3 @@ import { FormsModule } from '@angular/forms';
   bootstrap: [AppComponent],
 })
 export class AppModule { }
-
-
-// tenantResolver: () => ({
-//       tenant: new URLSearchParams(window.location.search).get("organization"),
-//     })
