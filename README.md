@@ -50,3 +50,5 @@ npm start
 
 - The application will be opened on [http://localhost:3000](http://localhost:3000) in development mode
 - In order to trigger the login, click on the Login button in order to redirect to your login box.
+- Signup as a new user, you will be logged in to the app as that user-
+![App Screenshot](./images/app_screenshot.png)
