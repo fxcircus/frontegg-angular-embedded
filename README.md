@@ -1,37 +1,52 @@
 # Getting Started with Frontegg Hosted Login-Box and Angular
 
-This sample is a [Frontegg Hosted Login-Box sample crafted with Angular](https://docs.frontegg.com/docs/angular-hosted-login-guide)
+Reference documentation - [Frontegg Embedded login with Angular SDK](https://docs.frontegg.com/docs/angular-embedded-login-guide)
+
+
+### Frontegg account setup 
+Signup for a Frontegg account on one of our public regions if you don't have one already:
+- EU ➜ https://portal.frontegg.com/signup
+- US ➜ https://portal.us.frontegg.com/signup
+- CA ➜ https://portal.ca.frontegg.com/signup
+- AU ➜ https://portal.au.frontegg.com/signup
+
 
 ## Running the sample
 
-After cloning the project, install it using
+Clone the project and install the dependencies-
 
-### `npm install`
+```
+npm install
+```
 
-- Open `src/app/app.module.ts`, add your Client ID and API Key from `Frontegg Portal ➜ [ENVIRONMENT] ➜ Env Settings page`:
+
+Navigate to `src/app/app.module.ts`, add your Client ID and Login URL from `Frontegg Portal ➜ [ENVIRONMENT] ➜ Env Settings page`:
 
 ```
 FronteggAppModule.forRoot(
       {
         contextOptions: {
-          baseUrl: "https://[YOUR-SUB-DOMAIN].frontegg.com",
-          clientId: "[YOUR-CLIENT-ID]", // Replace with Client ID from Frontegg Portal ➜ [ENVIRONMENT] ➜ Env Settings page
-          tenantResolver: () => ({
-            tenant: new URLSearchParams(window.location.search).get("organization"),
-          })
+          baseUrl: "https://app-xxx.frontegg.com", // Replace with Login URL from Frontegg Portal ➜ [ENVIRONMENT] ➜ Env Settings page (remove "/oauth" from the path!)
+          clientId: "clientId", // Replace with Client ID from Frontegg Portal ➜ [ENVIRONMENT] ➜ Env Settings page
+          tenantResolver: () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            return { tenant: urlParams.get('organization') };
+          },
         },
         authOptions: {
-          // disableSilentRefresh: true, // disables token refreshes
-          enableSessionPerTenant: true // enables separate sessions for each new tab
+          // enableSessionPerTenant: true, // enables separate sessions for each new tab
+          keepSessionAlive: true // Uncomment this in order to maintain the session alive
         },
-        hostedLoginBox: true,
+        hostedLoginBox: false,
       }
     ),
 ```
 
+- Save the file.
+- Start the code-
+```
+npm start
+```
 
-In order to run the project, run
-### `npm start`
-
-The application will be opened on [http://localhost:3000](http://localhost:3000) in development mode
-In order to trigger the login, click on the Login button in order to redirect to your login box.
+- The application will be opened on [http://localhost:3000](http://localhost:3000) in development mode
+- In order to trigger the login, click on the Login button in order to redirect to your login box.
